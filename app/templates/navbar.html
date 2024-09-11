@@ -1,0 +1,193 @@
+<nav style="height: 75vh;" id="menu_inicial" class="navbar navbar-expand-lg navbar-light bg-withe">
+  <div class="container" id="menu">
+    <a class="navbar-brand" href="#"><img style="width: 65px;" src="../static/img/logo.png" alt=""></a>
+    <a href=""><img src="../static/img/logo2.png" class="mt-3" style="width:200px;" alt=""></a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ml-auto ">
+        <li class="nav-item mr-3">
+          <a class="nav-link active" id="inicio" href="javascript:void(0);" style="color: #465DA7;">Inicio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="alojamientos" href="javascript:void(0);" style="color: #465DA7;">Alojamientos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" style="color: #465DA7;">Información</a>
+        </li>
+        <li class="nav-item">
+          <a a class="nav-link" id="ofertas" href="javascript:void(0);" style="color: #465DA7;">Ofertas</a>
+        </li>
+    </div>
+  </div>
+
+  
+  <div class="container">
+    <div id="" style="display: flex; justify-content: space-between; width: 100%;">
+      <!-- Formulario de filtros -->
+      <form id="formulario-filtros" style="display: flex; width: 100%; gap: 10px;">
+  
+        <div style="flex: 1;">
+          <label for="TipoInmueble">Tipo Inmueble:</label>
+          <select name="TipoInmueble" id="TipoInmueble" class="form-control" style="width: 100%; height: 3.6rem; font-size: 1.5rem;">
+            <option value="normal">Todos</option>
+            <option value="Villa">Villa</option>
+            <option value="Apartamento">Apartamento</option>
+          </select>
+        </div>
+  
+
+        <div style="flex: 1;">
+          <label for="fecha1" class="form-control-label">Inicio:</label>
+          <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control">
+        </div>
+  
+        <div style="flex: 1;">
+          <label for="fecha2" class="form-control-label">Final:</label>
+          <input type="date" id="fecha_final" name="fecha_final" class="form-control" style="width: 100%;">
+        </div>
+  
+        <div style="flex: 1;">
+          <label for="capacidad">Capacidad:</label>
+          <select name="capacidad" id="capacidad" class="form-control" style="width: 100%; height: 3.6rem; font-size: 1.5rem;">
+            <option value="2">2 personas</option>
+            <option value="4">4 personas</option>
+            <option value="8">8 personas</option>
+          </select>
+        </div>
+  
+        <div style="flex: 1;">
+          <label for=""></label>
+          <button class="btn btn-primary" id="btn-buscar" style="width: 100%; height: 3.6rem; font-size: 1.5rem; margin-top: 0.5rem;">Buscar</button>
+        </div>
+  
+      </form>
+    </div>
+  </div>
+
+
+  <script>
+    // Obtener la fecha actual
+    var hoy = new Date();
+  
+    // Crear una nueva fecha sumando 7 días
+    var fechaFutura = new Date(hoy);
+    fechaFutura.setDate(hoy.getDate() + 7);
+  
+    // Formatear la fecha actual en formato YYYY-MM-DD
+    var diaActual = hoy.getDate().toString().padStart(2, '0');
+    var mesActual = (hoy.getMonth() + 1).toString().padStart(2, '0'); // Los meses en JavaScript van de 0 a 11
+    var añoActual = hoy.getFullYear();
+  
+    var fechaActual = añoActual + '-' + mesActual + '-' + diaActual;
+  
+    // Formatear la fecha futura en formato YYYY-MM-DD
+    var diaFuturo = fechaFutura.getDate().toString().padStart(2, '0');
+    var mesFuturo = (fechaFutura.getMonth() + 1).toString().padStart(2, '0');
+    var añoFuturo = fechaFutura.getFullYear();
+  
+    var fechaFinal = añoFuturo + '-' + mesFuturo + '-' + diaFuturo;
+  
+    // Establecer el valor de los campos de fecha
+    document.getElementById('fecha_inicio').value = fechaActual;
+    document.getElementById('fecha_final').value = fechaFinal;
+  </script>
+  
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector("#ofertas").addEventListener('click', function(){
+        window.location.href = "/alojamientos_desc/";
+      });
+    });
+  </script>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector("#inicio").addEventListener('click', function(){
+        window.location.href = "/";
+      });
+    });
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelector("#alojamientos").addEventListener('click', function(){
+        window.location.href = "/alojamientos/";
+      });
+    });
+  </script>
+
+  
+  
+
+</nav>
+
+
+<script>
+  document.getElementById('btn-buscar').addEventListener('click', event => {
+    event.preventDefault();
+
+    var tipoInmueble = document.getElementById('TipoInmueble').value;
+    const check_in = document.getElementById("fecha_inicio").value;
+    const check_out = document.getElementById("fecha_final").value;
+    var capacidad = document.getElementById('capacidad').value;
+
+    buscarAlojamiento(tipoInmueble, check_in, check_out, capacidad);
+  });
+
+  function buscarAlojamiento(tipoInmueble, check_in, check_out, capacidad) {
+    window.location.href =
+      `/buscar-alojamiento?tipoInmueble=${tipoInmueble}&check_in=${check_in}&check_out=${check_out}&capacidad=${capacidad}`;
+  }
+</script>
+
+
+
+
+
+
+
+<script>
+  function obtenerFecha() {
+    // Obtener el valor del campo de fecha
+    var fecha_inicio = document.getElementById('fecha_inicio').value;
+    var fecha_final = document.getElementById('fecha_final').value;
+
+    // Mostrar las fechas en la consola
+    console.log("Fecha de inicio:", fecha_inicio);
+    console.log("Fecha final:", fecha_final);
+
+    // Convertir las cadenas de texto en objetos Date
+    var fechaInicioParts = fecha_inicio.split('-');
+    var fechaInicio = new Date(fechaInicioParts[0], fechaInicioParts[1] - 1, fechaInicioParts[2]);
+
+    var fechaFinalParts = fecha_final.split('-');
+    var fechaFinal = new Date(fechaFinalParts[0], fechaFinalParts[1] - 1, fechaFinalParts[2]);
+
+    // Verificar si las fechas son válidas
+    if (isNaN(fechaInicio.getTime()) || isNaN(fechaFinal.getTime())) {
+      console.log("Las fechas ingresadas son inválidas.");
+      // Mostrar mensaje de error en el campo de precio
+      document.getElementById('precio').textContent = "Fechas ingresadas inválidas";
+      return;
+    }
+
+    // Verificar si la fecha final es anterior a la fecha de inicio
+    if (fechaFinal < fechaInicio) {
+      console.log("¡Fechas incorrectas! La fecha de salida no puede ser anterior a la fecha de entrada.");
+      // Mostrar mensaje de error en el campo de precio
+      document.getElementById('precio').textContent =
+        "La fecha de salida no puede ser anterior a la fecha de entrada";
+      return;
+    }
+
+    // Calcular la diferencia en días entre las fechas
+    var diffTiempo = fechaFinal.getTime() - fechaInicio.getTime();
+    var diffDias = Math.ceil(diffTiempo / (1000 * 3600 * 24));
+
+    console.log(diffDias);
+
+
+  }
+</script>

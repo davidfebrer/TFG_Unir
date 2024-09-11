@@ -1,0 +1,42 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Incluimos el archivo css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Le pasamos a la página ip_information el contenido title-->
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <title>
+        {% block title %} 
+            Flask Application web - 
+        {% endblock %}
+    </title>
+{% endblock %}
+
+{% block body %}
+
+    {% block navbar %}
+        {% include 'navbar.html' %}
+    {% endblock %}
+
+    <!-- Incluir un mensaje de exito cuando se ha registrado el usuario -->
+    <!-- {% for message in get_flashed_messages() %}
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" data-dismiss="alert" class="close">&times;</button>
+            {{message}}
+            </button>
+        </div>
+    {% endfor %} -->
+
+    <!-- {% block content %}
+    {% endblock %} -->
+
+    <!-- Añadimos los scripts -->
+    {% block scripts %}
+        {{super()}}
+    {% endblock %}
+
+{% endblock %}

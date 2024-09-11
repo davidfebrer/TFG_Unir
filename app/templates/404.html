@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{super()}}
+    404 Endpoint, URL no existente
+{% endblock%}
+
+{% block content %}
+
+    <p>herreorqer</p>
+    <h2>
+        Lo sentimos este URL  no existe en nuestro servidor.
+    </h2>
+    <p>{{error}}</p>
+
+{% endblock %}

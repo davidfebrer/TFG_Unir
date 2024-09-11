@@ -1,0 +1,453 @@
+{%extends 'base2.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+<!-- Mediante un bloque agregamos el título de la clase padre -->
+{%block title%}
+<!-- Super se utiliza para tener los mismo datos -->
+{{super()}}
+
+<!-- Importante si ponemos  { % endblock %} no funciona por el especio-->
+{% endblock %}
+
+
+
+
+{%block  content%}
+
+<!-- {% if userName %}
+    <h1>Bienvendio usuario {{userName}}</h1>
+    {% endif %} -->
+
+
+<div class="container">
+  <h1 style="text-align: center;" class="mt-3 mb-3">
+    Todos los alojamientos
+  </h1>
+
+  <!-- Botón para abrir la página de filtros -->
+  <!-- Botón para abrir/cerrar la página de filtros -->
+  <button onclick="alternarFiltros()">Filtrar Alojamientos</button>
+
+  <!-- Botones para ordenar precio -->
+  <button class="ordenarMenorMayor">Ordenar de Menor a Mayor Precio</button>
+  <button class="ordenarMayorMenor">Ordenar de Mayor a Menor Precio</button>
+
+
+  <script>
+    document.querySelectorAll(".ordenarMenorMayor").forEach(item => {
+      item.addEventListener('click', event => {
+        event.preventDefault();
+        ordenarAlojamientos("menorMayor");
+      });
+    });
+
+    document.querySelectorAll(".ordenarMayorMenor").forEach(item => {
+      item.addEventListener('click', event => {
+        event.preventDefault();
+        ordenarAlojamientos("mayorMenor");
+      });
+    });
+
+    function ordenarAlojamientos(orden) {
+      fetch(`/alojamientos/?orden=${orden}`)
+        .then(response => response.text())
+        .then(html => {
+          // Actualizar el contenido de alojamientos con el HTML ordenado
+          document.getElementById('detalles-alojamiento').innerHTML = html;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Capturar clic en el botón "Ordenar de Mayor a Menor Precio"
+      document.querySelector(".ordenarMayorMenor").addEventListener('click', function () {
+        // Redirigir a la página de alojamientos con el parámetro de orden correspondiente
+        window.location.href = "/alojamientos/?orden=mayor-menor";
+      });
+
+      // Capturar clic en el botón "Ordenar de Menor a Mayor Precio"
+      document.querySelector(".ordenarMenorMayor").addEventListener('click', function () {
+        // Redirigir a la página de alojamientos con el parámetro de orden correspondiente
+        window.location.href = "/alojamientos/?orden=menor-mayor";
+      });
+    });
+  </script>
+
+
+
+
+
+  <div id="pagina-filtros" style="display: none;">
+    <!-- Formulario de filtros -->
+    <form id="formulario-filtros">
+      <label for="ciudad">Ciudad:</label>
+      <select name="ciudad" id="ciudad">
+        <option value="normal">Todos</option>
+        <option value="Cala Galdana, Menorca">Cala Galdana, Menorca</option>
+        <option value="Son Bou, Menorca">Son Bou, Menorca</option>
+        <option value="Sonto Tomás, Menorca">Sonto Tomás, Menorca</option>
+      </select>
+
+      <label for="TipoInmueble">Tipo Inmueble: </label>
+      <select name="TipoInmueble" id="TipoInmueble">
+        <option value="normal">Todos</option>
+        <option value="Villa">Villa</option>
+        <option value="Apartamento">Apartamento</option>
+      </select>
+
+      <label for="precio">Precio: </label>
+      <select name="precio" id="precio">
+        <option value="normal">Todos</option>
+        <option value="precio_0-100">0-100 €</option>
+        <option value="precio_100-200">100-200 €</option>
+        <option value="precio_200-400">200-400 €</option>
+      </select>
+
+      <label for="capacidad">Capacidad: </label>
+      <select name="capacidad" id="capacidad">
+        <option value="normal">Todos</option>
+        <option value="2">2 personas</option>
+        <option value="4">4 personas</option>
+        <option value="8">8 personas</option>
+      </select>
+
+      <!-- Otros campos de filtro según tus necesidades -->
+      <button type="button" class="aplicarFiltros">Aplicar Filtros</button>
+      <button onclick="alternarFiltros()">Ocultar filtro</button>
+    </form>
+  </div>
+
+
+  <script>
+    // Función para mostrar la página de filtros
+    function alternarFiltros() {
+      var paginaFiltros = document.getElementById("pagina-filtros");
+      if (paginaFiltros.style.display === "none") {
+        // Si está oculta, mostrarla
+        paginaFiltros.style.display = "block";
+      } else {
+        // Si está visible, ocultarla
+        paginaFiltros.style.display = "none";
+      }
+    }
+
+
+    document.querySelector('.aplicarFiltros').addEventListener('click', function () {
+      // Obtener los valores de los filtros seleccionados
+      var ciudad = document.getElementById('ciudad').value;
+      var tipoInmueble = document.getElementById('TipoInmueble').value;
+      var precio = document.getElementById('precio').value;
+      var capacidad = document.getElementById('capacidad').value;
+
+      filtrarAlojamientos(ciudad, tipoInmueble, precio, capacidad)
+
+
+      function filtrarAlojamientos(ciudad, tipoInmueble, precio, capacidad) {
+        fetch(
+            `/alojamientos/?ciudad=${ciudad}&tipo_inmueble=${tipoInmueble}&precio=${precio}&capacidad=${capacidad}`)
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('detalles-alojamiento').innerHTML = html;
+          })
+          .catch(error => console.error('Error:', error));
+      }
+
+    })
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Capturar clic en el botón "Aplicar Filtros"
+      document.querySelector(".aplicarFiltros").addEventListener('click', function () {
+        // Obtener los valores seleccionados de los filtros
+        var ciudad = document.getElementById('ciudad').value;
+        var tipoInmueble = document.getElementById('TipoInmueble').value;
+        var precio = document.getElementById('precio').value;
+        var capacidad = document.getElementById('capacidad').value;
+
+        // Redirigir a la página de alojamientos con los parámetros de filtro
+        window.location.href =
+          `/alojamientos/?ciudad=${ciudad}&tipo_inmueble=${tipoInmueble}&precio=${precio}&capacidad=${capacidad}`;
+      });
+    });
+  </script>
+
+
+
+  <div class="row" id="detalles-alojamiento">
+
+
+    {% for alojamiento in alojamientos %}
+    {% if alojamiento.descuento %}
+    <div class="col-4 alojamiento">
+      <div class="card mt-3" style="width: 100%;">
+        <img src="{{ alojamiento.urlImg }}" class="card-img-top" style="height: 35vh;" alt="...">
+        <div class="card-body">
+          <h2 class="card-title mt-2">{{ alojamiento.nombre }}</h2>
+          <p class="card-text mt-3 mb-4">
+            <a href="{{alojamiento.url_ubi}}" style="text-decoration: none; color: black;">
+              {{alojamiento.ciudad}}
+            </a>
+
+            <div class="mt-5">
+              <div class="icon-with-number" style="margin-right: 20px;">
+                <span class="material-symbols-outlined ">bed</span>
+                <p class="mt-2">{{ alojamiento.cama_matrimonio }}</p>
+              </div>
+
+              <div class="icon-with-number" style="margin-right: 20px;">
+                <span class="material-symbols-outlined ">bathtub</span>
+                <p class="mt-2">{{ alojamiento.baño }}</p>
+              </div>
+
+              <div class="icon-with-number" style="margin-right: 20px;">
+                <span class="material-symbols-outlined ">
+                  group
+                </span>
+                <p class="mt-2">{{ alojamiento.capacidad }}</p>
+              </div>
+
+              <div class="icon-with-number" style="margin-right: 15px;">
+                <span class="material-symbols-outlined">
+                  beach_access
+                </span>
+                <p class="mt-2">{{ alojamiento.distancia_playa }}</p>
+              </div>
+
+              <div class="icon-with-number" style="margin-right: 15px;">
+                <span class="material-symbols-outlined ">
+                  restaurant_menu
+                </span>
+                <p class="mt-2">{{ alojamiento.restaurante }}</p>
+              </div>
+
+              <div class="icon-with-number">
+                <span class="material-symbols-outlined">
+                  shopping_bag
+                </span>
+                <p class="mt-2">{{ alojamiento.compra }}</p>
+              </div>
+
+            </div>
+
+            <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4 mt-5">
+                    <a href="#" class="btn btn-outline-primary btn-lg" style="font-size: 1.5rem;">{{alojamientos[0].precio_por_noche}} €/Noche</a>
+                  </div> -->
+            <div class="mt-4">
+              <h2 style="text-align: right;">
+
+                <div class="alojamiento" data-precio="{{ alojamiento.precio_por_noche }}"
+                  data-descuento="{{ alojamiento.precio_descuento }}">
+                  <!-- Precio original tachado -->
+                  <span class="precio_original"
+                    style="text-decoration: line-through; color: #465DA7; font-size: 1.2rem;">
+                    <span style="color: black; font-size: 1.2rem;">{{ alojamiento.precio_por_noche }} €/Noche</span>
+                  </span>
+
+                  <!-- Precio con descuento (inicialmente calculado) -->
+                  <span class="precio_total ml-3">
+                    {{ alojamiento.precio_por_noche * ((100 - alojamiento.precio_descuento) / 100) }} €/Noche
+                  </span>
+
+                  <!-- Precio por noche en oculto para JavaScript -->
+                  <span class="precio_por_noche" style="display: none;">{{ alojamiento.precio_por_noche }}</span>
+                </div>
+
+              </h2>
+            </div>
+
+            <div class="mt-5">
+              <a href="#" class="btn ver-alojamiento-btn" id="boton" data-id="{{ alojamiento.id }}">Ver alojamiento</a>
+            </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="col-4">
+      <div class="card mt-3" style="width: 100%;">
+        <span
+          style="position: absolute; top: 10px; right: 10px; background-color: #465DA7; color: white; border-radius: 50%; padding: 5px;">Nuevo</span>
+        <img src="{{ alojamiento.urlImg }}" class="card-img-top" style="height: 35vh;" alt="...">
+        <div class="card-body">
+          <h2 class="card-title mt-2">{{ alojamiento.nombre }}</h2>
+          <p class="card-text mt-3 mb-4">
+            <a href="{{ alojamiento.url_ubi }}" style="text-decoration: none; color: black;">
+              {{ alojamiento.ciudad }}
+            </a>
+          </p>
+          <div class="mt-5">
+            <div class="icon-with-number" style="margin-right: 20px;">
+              <span class="material-symbols-outlined ">bed</span>
+              <p class="mt-2">{{ alojamiento.cama_matrimonio }}</p>
+            </div>
+
+            <div class="icon-with-number" style="margin-right: 20px;">
+              <span class="material-symbols-outlined ">bathtub</span>
+              <p class="mt-2">{{ alojamiento.baño }}</p>
+            </div>
+
+            <div class="icon-with-number" style="margin-right: 20px;">
+              <span class="material-symbols-outlined ">
+                group
+              </span>
+              <p class="mt-2">{{ alojamiento.capacidad }}</p>
+            </div>
+
+            <div class="icon-with-number" style="margin-right: 15px;">
+              <span class="material-symbols-outlined">
+                beach_access
+              </span>
+              <p class="mt-2">{{ alojamiento.distancia_playa }}</p>
+            </div>
+
+            <div class="icon-with-number" style="margin-right: 15px;">
+              <span class="material-symbols-outlined ">
+                restaurant_menu
+              </span>
+              <p class="mt-2">{{ alojamiento.restaurante }}</p>
+            </div>
+
+            <div class="icon-with-number">
+              <span class="material-symbols-outlined">
+                shopping_bag
+              </span>
+              <p class="mt-2">{{ alojamiento.compra }}</p>
+            </div>
+
+          </div>
+
+
+          <div class="mt-4">
+            <h2 style="text-align: right;">
+              <div class="alojamiento" data-precio="{{ alojamiento.precio_por_noche }}"
+                data-descuento="{{ alojamiento.precio_descuento }}">
+                <span class="precio_por_noche" style="display: none;">{{ alojamiento.precio_por_noche }}</span>
+                <span class="precio_total ml-3">
+                  {{ alojamiento.precio_por_noche * ((100 - alojamiento.precio_descuento) / 100) }} €/Noche
+                </span>
+              </div>
+            </h2>
+          </div>
+
+          <div class="mt-5">
+            <a href="#" class="btn ver-alojamiento-btn" id="boton" data-id="{{ alojamiento.id }}">Ver alojamiento</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% endif %}
+    {% endfor %}
+  </div>
+
+
+
+
+
+  <script>
+    // Función para obtener los parámetros de la URL
+    function getParameterByName(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+  
+    // Obtener los parámetros de la URL
+    const checkIn = getParameterByName('check_in');
+    const checkOut = getParameterByName('check_out');
+  
+    document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.ver-alojamiento-btn').forEach(item => {
+      item.addEventListener('click', event => {
+        event.preventDefault();
+
+        // Obtener el ID del alojamiento del botón clicado
+        const alojamientoId = item.getAttribute('data-id');
+
+        // Obtener las fechas desde los parámetros de la URL
+        const checkIn = getParameterByName('check_in');
+        const checkOut = getParameterByName('check_out');
+
+        // Obtener el precio directamente del span
+        const precioElement = item.closest('.alojamiento').querySelector('.precio_total');
+
+        if (precioElement) {
+          // Extraer y limpiar el valor del precio total (sin la unidad de moneda)
+          const precioTotalText = precioElement.textContent.trim();
+          const precioTotal = parseFloat(precioTotalText.replace(' €/Noche', '').replace(',', '.'));
+
+          if (!isNaN(precioTotal)) {
+            // Redirigir a la página con los parámetros
+            const redirectUrl = `/obtener_detalles_alojamiento2/${alojamientoId}?check_in=${checkIn}&check_out=${checkOut}&precio=${precioTotal.toFixed(2)}`;
+            console.log('Redirigiendo a:', redirectUrl);
+
+            window.location.href = redirectUrl;
+          } else {
+            console.error('Error: El precio no es un número válido.');
+            alert('Ocurrió un error con el precio. Por favor, revisa la información.');
+          }
+        } else {
+          console.error('Error: No se encontró el elemento de precio total.');
+        }
+      });
+    });
+  });
+  </script>
+  
+  
+
+
+
+  <script>
+    // Función para obtener los parámetros de la URL
+    function getParameterByName(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    // Obtener los parámetros de la URL
+    const checkIn2 = getParameterByName('check_in');
+    const checkOut2 = getParameterByName('check_out');
+
+    // Verificar si los parámetros de fecha están presentes
+    if (checkIn2 && checkOut2) {
+      // Convertir las fechas a objetos Date
+      const fechaInicio = new Date(checkIn2);
+      const fechaFinal = new Date(checkOut2);
+
+      // Calcular la diferencia en días entre las fechas
+      const diffTiempo = fechaFinal - fechaInicio;
+      const diffDias = Math.ceil(diffTiempo / (1000 * 3600 *
+        24)); // Puedes usar Math.floor si prefieres redondear hacia abajo
+
+      // Obtener todos los elementos de alojamiento
+      const alojamientos = document.querySelectorAll('.alojamiento');
+
+      alojamientos.forEach(alojamiento => {
+        // Obtener el precio por noche y descuento desde los atributos de datos
+        const precioPorNoche = parseFloat(alojamiento.getAttribute('data-precio'));
+        const descuento = parseFloat(alojamiento.getAttribute('data-descuento'));
+
+        // Calcular el precio total con descuento
+        const precioConDescuento = precioPorNoche * ((100 - descuento) / 100);
+        const precioTotal = diffDias * precioConDescuento;
+
+        console.log(precioTotal)
+
+        // Actualizar el texto del precio en el elemento correspondiente
+        alojamiento.querySelector('.precio_total').textContent = `${precioTotal.toFixed(2)} €/Noche`;
+      });
+
+
+    } else {
+      // Manejo en caso de que no se proporcionen fechas
+      document.querySelectorAll('.precio_total').forEach(precioElement => {
+        precioElement.textContent = "Fecha no disponible";
+      });
+    }
+  </script>
+
+
+  {% endblock %}

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Incluimos el archivo css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Le pasamos a la página ip_information el contenido title-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+
+
+</head>
+<body>
+
+    <button class="btn btn-cerrar" data-id="{{ alojamiento.id }}">
+        Cerrar
+    </button>
+
+    <div class="container mt-3">
+        <div class="row" id="galeria_img">
+
+
+            {% for imagenes in alojamiento.galeriaImagenes %}     
+                       
+                <img src="{{ imagenes.imagen1 }}" class="img_galeria mb-2 mx-2" alt="Imagen de alojamiento" data-id="{{ alojamiento.id }}">
+                <img src="{{ imagenes.imagen2 }}" class="img_galeria mb-2 mx-2" alt="Imagen de alojamiento" data-id="{{ alojamiento.id }}">
+                <img src="{{ imagenes.imagen3 }}" class="img_galeria mb-2 mx-2" alt="Imagen de alojamiento" data-id="{{ alojamiento.id }}">
+                <img src="{{ imagenes.imagen4 }}" class="img_galeria mb-2 mx-2" alt="Imagen de alojamiento" data-id="{{ alojamiento.id }}">
+                <img src="{{ imagenes.imagen5 }}" class="img_galeria mb-2 mx-2" alt="Imagen de alojamiento" data-id="{{ alojamiento.id }}">
+                <img src="{{ imagenes.imagen6 }}" class="img_galeria mb-2 mx-2" alt="Imagen de alojamiento" data-id="{{ alojamiento.id }}">
+                <img src="{{ imagenes.imagen7 }}" class="img_galeria mb-2 mx-2" alt="Imagen de alojamiento" data-id="{{ alojamiento.id }}">
+                <img src="{{ imagenes.imagen8 }}" class="img_galeria mb-2 mx-2" alt="Imagen de alojamiento" data-id="{{ alojamiento.id }}">
+              
+                {% endfor %}
+        </div>
+    </div>
+
+
+    
+    
+
+    <script>
+        document.querySelectorAll('.btn-cerrar').forEach(item => {
+            item.addEventListener('click', event => {
+                event.preventDefault();
+                const alojamientoId = item.getAttribute('data-id');
+                obtenerDetallesAlojamiento(alojamientoId);
+            });
+        });
+    
+        function obtenerDetallesAlojamiento(alojamientoId) {
+        fetch(`/obtener_detalles_alojamiento/${alojamientoId}/`)
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('galeria_img').innerHTML = html;
+            console.log('Detalles del alojamiento obtenidos exitosamente.');
+  
+            // Redirigir a la página de detalles del alojamiento
+            window.location.href = `/obtener_detalles_alojamiento/${alojamientoId}/`;
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+
+    document.querySelectorAll('.img_galeria').forEach(item =>{
+      item.addEventListener('click', event => {
+        event.preventDefault();
+        const srcImagen = item.getAttribute("src");
+        const alojamientoId = item.getAttribute('data-id');
+        console.log(srcImagen)
+        console.log(alojamientoId)
+        mostrarCarruselImg (srcImagen, alojamientoId)
+
+      });
+    });
+
+    function mostrarCarruselImg (srcImagen, alojamientoId){
+      fetch(`/carrusel/${alojamientoId}/?imagen=${encodeURIComponent(srcImagen)}`)
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('galeria_img').innerHTML = html;
+        console.log("Detalles conseguidos exitosamente")
+        window.location.href = `/carrusel/${alojamientoId}/?imagen=${encodeURIComponent(srcImagen)}`;
+      })
+      .catch(error => console.error("Error", error));
+    }
+
+
+// // Definir una función separada para el evento click en las imágenes de la galería
+// function handleClick(event) {
+//         event.preventDefault();
+//         var nuevaUrlImagen = this.getAttribute('src');
+//         var alojamientoId = this.getAttribute('data-id'); // Obtener el ID del alojamiento
+//         // Mostrar la imagen en el carrusel
+//         mostrarImgCarrusel(nuevaUrlImagen, alojamientoId);
+//     }
+
+//     // Agregar el evento click a las imágenes de la galería
+//     document.querySelectorAll('.img_galeria').forEach(function(imagen) {
+//         imagen.addEventListener('click', handleClick);
+//     });
+
+//     // Función para mostrar la imagen en el carrusel
+//     function mostrarImgCarrusel(nuevaUrlImagen, alojamientoId) {
+//         fetch(`/obtener_detalles_alojamiento/${alojamientoId}/`)
+//             .then(response => response.text())
+//             .then(html => {
+//                 document.getElementById('galeria_img').innerHTML = html;
+//                 console.log('Detalles del alojamiento obtenidos exitosamente.');
+//                 // Redirigir a la página de detalles del alojamiento
+//                 window.location.href = `/obtener_detalles_alojamiento/${alojamientoId}/`;
+//             })
+//             .catch(error => console.error('Error:', error));
+//     }
+</script>
+
+
+
+</body>
+</html>

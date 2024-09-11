@@ -1,0 +1,193 @@
+{%extends 'base2.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+<!-- Mediante un bloque agregamos el título de la clase padre -->
+{%block title%}
+
+<!-- Super se utiliza para tener los mismo datos -->
+{{super()}}
+
+
+
+<!-- Importante si ponemos  { % endblock %} no funciona por el especio-->
+{% endblock %}
+
+
+
+
+{%block  content%}
+-->
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <h2 class="mt-4 mb-3" style="color: #465DA7; font-weight: bold;">Tramitar la reserva</h2>
+            <div class="card" style="width: 100%;">
+                <div class="card-body" style="width: 100%;">
+                    <h3 class="card-title">Información para realizar la reserva</h3>
+                    <div class="row card-text">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="nombre">Nombre:</label>
+                                    <br>
+                                    <label for="apellidos">Apellidos:</label>
+                                    <br>
+                                    <label for="pais">País:</label>
+                                    <br>
+                                    <label for="codigo_postal">Código Postal:</label>
+
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" id="nombre" name="nombre" style="width: 100%;" required>
+                                    <input type="text" id="apellidos" name="apellidos" style="width: 100%;" required>
+                                    <input type="text" id="pais" name="pais" style="width: 100%;" required>
+                                    <input type="text" id="codigo_postal" name="codigo_postal" style="width: 100%;"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="direccion">Dirección:</label>
+                                    <br>
+                                    <label for="email">Email:</label>
+                                    <br>
+                                    <label for="telefono">Teléfono:</label>
+                                    <br>
+                                    <label for="ciudad">Ciudad:</label>
+
+                                </div>
+
+                                <div class="col-6">
+                                    <input type="text" id="direccion" name="direccion" style="width: 100%;" required>
+                                    <input type="email" id="email" name="email" style="width: 100%;" required>
+                                    <input type="tel" id="telefono" name="telefono" style="width: 100%;" required>
+                                    <input type="text" id="ciudad" name="ciudad" style="width: 100%;" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <button type="submit" class="btn btn-primary" id="btn-reservar" data-id="{{ id_reserva }}">Confirmar
+                reserva</button>
+
+
+
+        </div>
+
+        <div class="col-4">
+            <div>
+                <img src="{{alojamiento.urlImg}}" alt="" style="width: 100%;">
+            </div>
+
+            <div class="mt-4">
+                <h4 style="color: #465DA7;" id="alojamiento_nombre">{{ alojamiento.nombre }}</h4>
+                <p>El check in es: <span id="fecha_inicio10"></span> a las 15:00</p>
+                <p>El check out es: <span id="fecha_final10"></span> a las 10:00</p>
+                <h4>Precio Total: <span id="precio_total"></span></h4>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Función para obtener los parámetros de la URL
+        function getParameterByName(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        const checkIn = getParameterByName('check_in');
+        const checkOut = getParameterByName('check_out');
+        const precio = getParameterByName('precio');
+
+        // Asignar los valores obtenidos a los elementos HTML correspondientes
+        document.getElementById('fecha_inicio10').textContent = checkIn || 'No disponible';
+        document.getElementById('fecha_final10').textContent = checkOut || 'No disponible';
+        document.getElementById('precio_total').textContent = precio ? `${precio} €/Noche` : 'No disponible';
+
+    });
+
+</script>
+
+
+
+<script>
+    function confirmarReserva(id_reserva, event) {
+        event.preventDefault();
+        const nombre = document.getElementById('nombre').value;
+        const apellidos = document.getElementById('apellidos').value;
+        const pais = document.getElementById('pais').value;
+        const codigo_postal = document.getElementById('codigo_postal').value;
+        const direccion = document.getElementById('direccion').value;
+        const email = document.getElementById('email').value;
+        const telefono = document.getElementById('telefono').value;
+        const ciudad = document.getElementById('ciudad').value;
+        const check_in = document.getElementById('fecha_inicio10')
+            .textContent;
+        const check_out = document.getElementById('fecha_final10')
+            .textContent; 
+        let precio_total = document.getElementById('precio_total').textContent;
+        precio_total = parseFloat(precio_total.replace(' €/Noche', ''));
+
+        const bodyData = {
+            nombre,
+            precio_total,
+            apellidos,
+            pais,
+            codigo_postal,
+            direccion,
+            email,
+            telefono,
+            ciudad,
+            check_in,
+            check_out
+        };
+
+        fetch(`/reserva_hecha/${id_reserva}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(bodyData)
+            })
+            .then(response => response.text())
+            .then(html => {
+                console.log('Detalles enviados exitosamente');
+                // Redirigir a la página de detalles del alojamiento
+                window.location.href = `/reserva_hecha/${id_reserva}/`;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    document.querySelectorAll('#btn-reservar').forEach(item => {
+        item.addEventListener('click', event => {
+            // Obtener el ID de reserva del botón de reserva
+            const reservaId = item.getAttribute('data-id');
+            // Llamar a la función de confirmación de reserva
+            confirmarReserva(reservaId, event);
+        });
+    });
+</script>
+
+
+
+
+
+
+{% endblock %}

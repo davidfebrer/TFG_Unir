@@ -1,0 +1,368 @@
+<!-- Utilizamos la pagina base como padre -->
+{%extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+
+
+
+{%block  content%}
+
+
+
+
+
+
+<!-- Mostramos en el html los datos que nos pasan del context de python -->
+
+<div class="container">
+  <h1 style="text-align: center;" class="mt-3 mb-3">
+    Ofertas de la semana
+  </h1>
+
+  <div class="row gx-5">
+
+    <!-- Cardviews de los alojamientos -->
+
+    {% for alojamiento in alojamientos %}
+    {% if alojamiento.descuento %}
+    <div class="col-4">
+      <div class="card mt-3" style="width: 100%;">
+        <img src="{{ alojamiento.urlImg }}" class="card-img-top" style="height: 35vh;" alt="...">
+        <div class="card-body">
+          <h2 class="card-title mt-2">{{ alojamiento.nombre }}</h2>
+          <p class="card-text mt-3 mb-4">
+            <a href="{{alojamiento.url_ubi}}" style="text-decoration: none; color: black;">
+              {{alojamiento.ciudad}}
+            </a>
+
+            <div class="mt-5">
+              <div class="icon-with-number" style="margin-right: 20px;">
+                <span class="material-symbols-outlined ">bed</span>
+                <p class="mt-2">{{ alojamiento.cama_matrimonio }}</p>
+              </div>
+
+              <div class="icon-with-number" style="margin-right: 20px;">
+                <span class="material-symbols-outlined ">bathtub</span>
+                <p class="mt-2">{{ alojamiento.baño }}</p>
+              </div>
+
+              <div class="icon-with-number" style="margin-right: 20px;">
+                <span class="material-symbols-outlined ">
+                  group
+                </span>
+                <p class="mt-2">{{ alojamiento.capacidad }}</p>
+              </div>
+
+              <div class="icon-with-number" style="margin-right: 15px;">
+                <span class="material-symbols-outlined">
+                  beach_access
+                </span>
+                <p class="mt-2">{{ alojamiento.distancia_playa }}</p>
+              </div>
+
+              <div class="icon-with-number" style="margin-right: 15px;">
+                <span class="material-symbols-outlined ">
+                  restaurant_menu
+                </span>
+                <p class="mt-2">{{ alojamiento.restaurante }}</p>
+              </div>
+
+              <div class="icon-with-number">
+                <span class="material-symbols-outlined">
+                  shopping_bag
+                </span>
+                <p class="mt-2">{{ alojamiento.compra }}</p>
+              </div>
+
+            </div>
+
+            <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4 mt-5">
+                    <a href="#" class="btn btn-outline-primary btn-lg" style="font-size: 1.5rem;">{{alojamientos[0].precio_por_noche}} €/Noche</a>
+                  </div> -->
+            <div class="mt-4">
+              <h2 style="text-align: right;">
+                <span style="text-decoration: line-through; color: #465DA7; font-size: 1.2rem;">
+                  <!-- Establece el color de la línea tachada -->
+                  <span style="color: black; font-size: 1.2rem;">{{alojamiento.precio_por_noche}} €/Noche</span>
+                </span>
+                <span class="ml-3">{{alojamiento.precio_por_noche * ((100-alojamiento.precio_descuento)/100)}}
+                  €/Noche</span>
+              </h2>
+              </h2>
+            </div>
+
+            <div class="mt-5">
+              <a href="#" class="btn ver-alojamiento-btn" id="boton" data-id="{{ alojamiento.id }}">Ver alojamiento</a>
+            </div>
+        </div>
+      </div>
+      
+    </div>
+    {% endif %}
+    {% endfor %}
+
+    <div class="mt-5" style="margin: 0 auto;">
+      <!-- Div para el botón -->
+      <a href="#" class="btn btn_aloj_desc" id="boton3">Ver todos los alojamientos con descuento</a>
+    </div>
+
+
+
+
+
+
+    <div class="container">
+      <h1 style="text-align: center;" class="mt-5 mb-4">Nuevos Alojamientos</h1>
+
+      <div class="row">
+        {% for alojamiento in alojamientos %}
+        {% if alojamiento.nuevo %}
+        <div class="col-4">
+          <div class="card mt-3" style="width: 100%;">
+            <span
+              style="position: absolute; top: 10px; right: 10px; background-color: #465DA7; color: white; border-radius: 50%; padding: 5px;">Nuevo</span>
+            <img src="{{ alojamiento.urlImg }}" class="card-img-top" style="height: 35vh;" alt="...">
+            <div class="card-body">
+              <h2 class="card-title mt-2">{{ alojamiento.nombre }}</h2>
+              <p class="card-text mt-3 mb-4">
+                <a href="{{ alojamiento.url_ubi }}" style="text-decoration: none; color: black;">
+                  {{ alojamiento.ciudad }}
+                </a>
+              </p>
+              <div class="mt-5">
+                <div class="icon-with-number" style="margin-right: 20px;">
+                  <span class="material-symbols-outlined ">bed</span>
+                  <p class="mt-2">{{ alojamiento.cama_matrimonio }}</p>
+                </div>
+  
+                <div class="icon-with-number" style="margin-right: 20px;">
+                  <span class="material-symbols-outlined ">bathtub</span>
+                  <p class="mt-2">{{ alojamiento.baño }}</p>
+                </div>
+  
+                <div class="icon-with-number" style="margin-right: 20px;">
+                  <span class="material-symbols-outlined ">
+                    group
+                  </span>
+                  <p class="mt-2">{{ alojamiento.capacidad }}</p>
+                </div>
+  
+                <div class="icon-with-number" style="margin-right: 15px;">
+                  <span class="material-symbols-outlined">
+                    beach_access
+                  </span>
+                  <p class="mt-2">{{ alojamiento.distancia_playa }}</p>
+                </div>
+  
+                <div class="icon-with-number" style="margin-right: 15px;">
+                  <span class="material-symbols-outlined ">
+                    restaurant_menu
+                  </span>
+                  <p class="mt-2">{{ alojamiento.restaurante }}</p>
+                </div>
+  
+                <div class="icon-with-number">
+                  <span class="material-symbols-outlined">
+                    shopping_bag
+                  </span>
+                  <p class="mt-2">{{ alojamiento.compra }}</p>
+                </div>
+  
+              </div>
+  
+             
+              <div class="mt-4">
+                <h2 style="text-align: right;">
+                  </span>
+                  <span class="ml-3">{{alojamiento.precio_por_noche }}
+                    €/Noche</span>
+                </h2>
+                </h2>
+              </div>
+  
+              <div class="mt-5">
+                <a href="#" class="btn ver-alojamiento-btn" id="boton" data-id="{{ alojamiento.id }}">Ver alojamiento</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="mt-5" style="margin: 0 auto;">
+      <!-- Div para el botón -->
+      <a href="#" class="btn btn_aloj_nuev" id="boton3">Ver todos los alojamientos nuevos</a>
+    </div>
+
+
+
+
+
+    <div class="container mt-5">
+      <h1 style="text-align: center;">
+        Lugares destacados
+      </h1>
+
+      <div class="row mt-4">
+        <div class="col-3">
+          <div class="card text-white">
+            <img src="../static/img/mnc.jpg" style="height: 43vh;" class="card-img" alt="...">
+            <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
+              <div class="mb-3">
+                <!-- Div para el título -->
+                <h3 class="card-title" style="font-weight: bold; font-size: 1.9rem;">Cala Galdana, Menorca</h3>
+              </div>
+              <div>
+                <!-- Div para el botón -->
+                <a href="#" class="btn boton_ubicacion" id="boton2" data-ubicacion="Cala Galdana, Menorca">Cala Galdana, Menorca</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="card text-white">
+            <img src="../static/img/bou.jpg" style="height: 43vh;" class="card-img" alt="...">
+            <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
+              <div class="mb-3">
+                <!-- Div para el título -->
+                <h3 class="card-title" style="font-weight: bold; font-size: 1.9rem;">Son Bou, Menorca</h3>
+              </div>
+              <div>
+                <!-- Div para el botón -->
+                <a href="#" class="btn boton_ubicacion" id="boton2" data-ubicacion="Son Bou, Menorca">Son Bou, Menorca</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="card text-white">
+            <img src="../static/img/papous.jpg" style="height: 43vh;" class="card-img" alt="...">
+            <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
+              <div class="mb-3">
+                <!-- Div para el título -->
+                <h3 class="card-title" style="font-weight: bold; font-size: 1.9rem;">Sonto Tomás, Menorca</h3>
+              </div>
+              <div>
+                <!-- Div para el botón -->
+                <a href="#" class="btn boton_ubicacion" id="boton2" data-ubicacion="Sonto Tomás, Menorca">Sonto Tomás, Menorca</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-3">
+          <div class="card text-white">
+            <img src="../static/img/port.jpg" style="height: 43vh;" class="card-img" alt="...">
+            <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
+              <div class="mb-3">
+                <!-- Div para el título -->
+                <h3 class="card-title" style="font-weight: bold; font-size: 1.9rem;">Algarve, Portugal</h3>
+              </div>
+              <div>
+                <!-- Div para el botón -->
+                <a href="#" class="btn boton_ubicacion" id="boton2" data-ubicacion="Algarve">Explora Algarve</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+
+    <div class="container mt-5">
+      <h1 class="text-center mt-3">
+        Ubicacion
+      </h1>
+
+      <div id="map"></div>
+
+      <!-- Enlace a Leaflet.js JS -->
+      <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+      {% block javascript %}
+
+
+      <script>
+        // Inicializar el mapa
+        var map = L.map('map').setView([39.9496, 4.1260], 10);
+        // Establece el centro del mapa y el nivel de zoom inicial
+      
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+      
+        // Iterar sobre la lista de alojamientos y agregar un marcador para cada uno
+        {% for alojamiento in alojamientos %}
+          L.marker([{{ alojamiento.latitud }}, {{ alojamiento.longitud }}]).addTo(map)
+            .bindPopup("<b>{{ alojamiento.nombre }}");
+        {% endfor %}
+      </script>
+
+      {% endblock %}
+
+    </div>
+
+
+    <script>
+      document.querySelectorAll('.ver-alojamiento-btn').forEach(item => {
+          item.addEventListener('click', event => {
+              event.preventDefault();
+              const alojamientoId = item.getAttribute('data-id');
+              // Redirigir directamente a la página de detalles del alojamiento
+              window.location.href = `/obtener_detalles_alojamiento/${alojamientoId}/`;
+          });
+      });
+  </script>
+  
+
+  <script>
+    document.querySelectorAll('.btn_aloj_desc').forEach(item => {
+      item.addEventListener('click', event => {
+              event.preventDefault();
+
+              window.location.href = `/alojamientos_desc/`;
+          });
+    });
+    
+  </script>
+
+
+<script>
+  document.querySelectorAll('.btn_aloj_nuev').forEach(item => {
+    item.addEventListener('click', event => {
+            event.preventDefault();
+
+            window.location.href = `/alojamientos_nuev/`;
+        });
+  });
+  
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.boton_ubicacion').forEach(button => {
+          button.addEventListener('click', event => {
+              event.preventDefault();
+              
+              // Obtener la ubicación desde el atributo data-ubicacion
+              const ubicacion = button.getAttribute('data-ubicacion');
+
+              // Redirigir a la nueva página con el filtro de ubicación
+              window.location.href = `/alojamientos_ubicacion/?ciudad=${encodeURIComponent(ubicacion)}`;
+          });
+      });
+  });
+</script>
+
+
+    {% endblock %}

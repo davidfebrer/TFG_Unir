@@ -1,0 +1,332 @@
+body {
+    font-size: 1.5rem;
+    font-family: 'Montserrat'; /* Aplica la fuente Montserrat al cuerpo del documento */
+}
+
+
+
+/* Posicionamos arriba del contenedor */
+#menu{
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    margin-left: auto; 
+    margin-right: auto;
+
+}
+
+#menu_inicial{
+    background-image: url("../img/fon.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: -30rem;
+}
+
+.icon-with-number {
+    display: inline-block;
+    color: #465DA7;
+}
+
+.icon-with-number span {
+    display: block;
+    text-align: center;
+}
+
+.icon-with-number p {
+    text-align: center;
+}
+
+#boton{
+    width: 100%;
+    font-size: 1.7rem;
+    color: #465DA7;
+    border: 1px solid ;
+    border-color: #465DA7;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+    border-radius: 5px;
+}
+
+#boton:hover{
+    background-color: #465DA7;
+    color: white;
+}
+
+.card-img-overlay {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-title {
+    margin-bottom: 2px; /* Espacio entre el título y el botón */
+}
+
+#boton2{
+    font-size: 1.5rem;
+    background-color: #465DA7;
+    color: white;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+#boton2:hover{
+    background-color: white;
+    color: #465DA7;
+    
+}
+
+
+#boton3{
+    font-size: 1.5rem;
+    background-color: #465DA7;
+    color: white;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+#boton3:hover{
+    background-color: #8b8bed;
+    color: white;
+    
+}
+
+.txt_titulo{
+    font-size: 1.7rem;
+}
+
+.txt_normal{
+    font-size: 1.5rem;
+}
+
+#map{
+    height: 400px;
+}
+
+#pagina-filtros {
+    position: fixed; /* Posición fija en la pantalla */
+    top: 0; /* Pegado al borde superior */
+    left: 0; /* Pegado al borde izquierdo */
+    bottom: 0; /* Ocupa todo el alto de la pantalla */
+    width: 22rem; /* Ancho fijo */
+    background-color: #f0f0f0; /* Color de fondo */
+    padding: 20px; /* Espaciado interno */
+    overflow-y: auto; /* Scroll vertical si hay demasiado contenido */
+    z-index: 1; /* Z-index para estar por encima del resto del contenido */
+}
+
+.card-body{
+    padding: 0;
+}
+
+.card-title{
+    padding-top: 1.25rem;
+    padding-left: 1rem;
+    padding-bottom: 1.25rem;
+}
+
+.card-text{
+    padding: 1.25rem;
+}
+
+.alojamiento_detalle{
+    
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    
+}
+
+.galeria{
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+
+
+
+.galeria img{
+    width: 25%;
+    padding: 3px;
+}
+
+
+
+#imagenes{
+
+    height: auto;
+    width: 25%;
+}
+
+.carousel-inner img {
+    height: 400px;
+    object-fit: cover;
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+    position: absolute; /* Posicionamiento absoluto para superponer los controles sobre el carrusel */
+    top: 0;
+    bottom: 0;
+    z-index: 1; /* Asegura que los controles estén sobre el contenido del carrusel */
+    display: flex; /* Usa flexbox para alinear verticalmente los íconos */
+    align-items: center; /* Alinea verticalmente los íconos */
+    justify-content: center; /* Centra horizontalmente los íconos */
+    width: 15%; /* Ancho de los controles */
+    color: none; /* Color de los íconos */
+    text-align: center; /* Alinea el texto al centro */
+    opacity: 0.5; /* Opacidad inicial */
+    transition: opacity 0.15s ease; /* Transición de opacidad suave */
+    background-color: transparent; /* Hace que el fondo sea transparente */
+    border: none;
+}
+
+/* Estilos para los controles de navegación del carrusel al pasar el ratón por encima */
+.carousel-control-next:hover,
+.carousel-control-prev:hover {
+    opacity: 1; /* Aumenta la opacidad al pasar el ratón por encima */
+}
+
+.img_galeria{
+    width: 45%;
+    border-radius: 0.5rem;
+    
+
+}
+
+#galeria-imagen img{
+    height: auto;
+    margin: 0 auto;
+    z-index: 10;
+
+}
+
+#carrusel{
+    height: auto;
+    margin: 0 auto;
+}
+
+#carrusel img{
+    height: 400px;
+    width: auto;
+}
+
+.check-in{
+    position: sticky;
+    top: 20px;
+    grid-column: 2;
+    grid-row: 1;
+    margin-bottom: 0;
+    z-index: 3;
+    min-width: 310px;
+    max-width: 378px;
+    flex: 1 1 360px;
+}
+
+.aloj_inf{
+    border: 1px solid #cacaca;
+    border-radius: 3px;
+}
+
+.aloj_inf2{
+    background-color: #f8f8f8;
+    height: 100%;
+    padding-top: 0.8rem;
+    position: relative;
+    padding: 0.85rem 1rem 1rem;
+}
+
+
+.punt_com{
+    margin-left: 1.5rem;
+    background-color: #465DA7;
+    padding-top: 1rem;
+    padding-bottom: 0.3rem;
+    border-radius: 4px;
+}
+
+
+#fecha_inicio, #fecha_final{
+    padding-left: 0.7rem;
+    width: 100%;
+    font-size: 1.3rem;
+    margin-bottom: 0;
+    height: 3.75rem;
+    padding: 1.2rem 1rem 1.2rem 1rem;
+    border: 1px solid #e1e1e1;
+    margin-bottom: 12px;
+    border-radius: 4px;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-position: right 0.7rem center;
+}
+
+.ver-galeria-btn{
+    font-size: 1.7rem;
+    margin-right: 0.5rem;
+    background-color: #465DA7;
+    color: white;
+    border-color: #465DA7;
+    padding: 1rem;
+    
+}
+
+.ver-galeria-btn:hover{
+    color: #465DA7;
+    background-color: white;
+    border-color: white;
+}
+
+#btn-reservar{
+    font-size: 2rem;
+    color: #465DA7;
+    background-color: white;
+    border-color: #465DA7;
+    margin-top: 1rem;
+}
+
+
+#btn-reservar:hover{
+    background-color: #465DA7;
+    color: white;
+    border-color: white;
+}
+
+#btn-buscar:hover{
+    background-color: #465DA7;
+    border-color: #465DA7;
+    color: white;
+
+}
+
+#btn-buscar{
+    background-color: white;
+    border: white;
+    color: #465DA7;
+}
+
+#filtrar{
+    background-color: #465DA7;
+    border: #465DA7;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+}
+
+
+#filtrar:hover{
+    background-color: white;
+    color: #465DA7;
+}
